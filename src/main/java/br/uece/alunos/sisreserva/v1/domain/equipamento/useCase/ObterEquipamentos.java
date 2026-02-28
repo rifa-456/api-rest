@@ -36,10 +36,7 @@ public class ObterEquipamentos {
      * @return Página com os equipamentos encontrados
      */
     public Page<EquipamentoRetornoDTO> obter(Pageable pageable, String id, String tombamento, String status, String tipoEquipamento, Boolean reservavel) {
-        // Verifica se o usuário autenticado é externo e deve ter restrições
         boolean restringirApenasMultiusuario = usuarioAutenticadoService.deveAplicarRestricoesMultiusuario();
-
-        // Log de auditoria: registra quando filtro de restrição é aplicado
         if (restringirApenasMultiusuario) {
             var usuario = usuarioAutenticadoService.getUsuarioAutenticado();
             if (usuario != null) {
@@ -47,20 +44,16 @@ public class ObterEquipamentos {
                         usuario.getEmail(), usuario.getId());
             }
         }
-
         var spec = EquipamentoSpecification.byFilters(
                 id,
                 tombamento,
                 status,
                 tipoEquipamento,
-                null,  // multiusuario - não passado explicitamente pelo usuário
-                reservavel,  // reservavel - passa o parâmetro recebido
-                restringirApenasMultiusuario  // Restrição para usuários externos
+                null,
+                reservavel,
+                restringirApenasMultiusuario
         );
-
         var page = repository.findAll(spec, pageable);
-
-        // Log de auditoria: registra quantidade de resultados quando há restrição
         if (restringirApenasMultiusuario) {
             var usuario = usuarioAutenticadoService.getUsuarioAutenticado();
             if (usuario != null) {
@@ -68,7 +61,6 @@ public class ObterEquipamentos {
                         usuario.getEmail(), page.getTotalElements());
             }
         }
-
         return page.map(EquipamentoRetornoDTO::new);
     }
 }

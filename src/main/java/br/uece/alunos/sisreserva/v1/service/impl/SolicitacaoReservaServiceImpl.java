@@ -1,24 +1,23 @@
 package br.uece.alunos.sisreserva.v1.service.impl;
 
-
-import br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.useCase.CriarSolicitacaoReserva;
-import br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.useCase.ObterSolicitacaoReserva;
 import br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.useCase.AtualizarStatusSolicitacao;
+import br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.useCase.CriarSolicitacaoReserva;
 import br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.useCase.ObterHorariosOcupados;
 import br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.useCase.ObterRecorrenciaInfo;
+import br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.useCase.ObterSolicitacaoReserva;
+import br.uece.alunos.sisreserva.v1.dto.solicitacaoReserva.AtualizarStatusSolicitacaoDTO;
+import br.uece.alunos.sisreserva.v1.dto.solicitacaoReserva.HorariosOcupadosPorMesDTO;
 import br.uece.alunos.sisreserva.v1.dto.solicitacaoReserva.RecorrenciaInfoDTO;
 import br.uece.alunos.sisreserva.v1.dto.solicitacaoReserva.SolicitacaoReservaDTO;
 import br.uece.alunos.sisreserva.v1.dto.solicitacaoReserva.SolicitacaoReservaRetornoDTO;
-import br.uece.alunos.sisreserva.v1.dto.solicitacaoReserva.AtualizarStatusSolicitacaoDTO;
-import br.uece.alunos.sisreserva.v1.dto.solicitacaoReserva.HorariosOcupadosPorMesDTO;
 import br.uece.alunos.sisreserva.v1.service.SolicitacaoReservaService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import java.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -38,17 +37,21 @@ public class SolicitacaoReservaServiceImpl implements SolicitacaoReservaService 
 
     @Override
     public Page<SolicitacaoReservaRetornoDTO> obterSolicitacaoReserva(
-        Pageable pageable,
-        String id,
-        LocalDate dataInicio,
-        LocalDate dataFim,
-        String espacoId,
-        String equipamentoId,
-        String usuarioSolicitanteId,
-        Integer status,
-        String projetoId
+            Pageable pageable,
+            String id,
+            LocalDate dataInicio,
+            LocalDate dataFim,
+            String espacoId,
+            String equipamentoId,
+            String usuarioSolicitanteId,
+            Integer status,
+            String projetoId,
+            String espacoDoEquipamentoId
     ) {
-        return obterSolicitacaoReserva.obterSolicitacaoReserva(pageable, id, dataInicio, dataFim, espacoId, equipamentoId, usuarioSolicitanteId, status, projetoId);
+        return obterSolicitacaoReserva.obterSolicitacaoReserva(
+                pageable, id, dataInicio, dataFim, espacoId, equipamentoId,
+                usuarioSolicitanteId, status, projetoId, espacoDoEquipamentoId
+        );
     }
 
     @Override

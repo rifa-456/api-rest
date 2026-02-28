@@ -60,7 +60,6 @@ public interface SolicitacaoReservaRepository extends JpaRepository<SolicitacaoR
     @Query("SELECT sr FROM SolicitacaoReserva sr WHERE sr.status = :status AND sr.espaco.id = :espacoId")
     List<SolicitacaoReserva> findByStatusAndEspacoId(StatusSolicitacao status, String espacoId);
 
-    // Novo método que verifica apenas reservas aprovadas
     @Query("""
         SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END
         FROM SolicitacaoReserva s
@@ -96,7 +95,6 @@ public interface SolicitacaoReservaRepository extends JpaRepository<SolicitacaoR
     """)
     List<SolicitacaoReserva> findReservasAprovadasPorPeriodo(LocalDateTime dataInicio, LocalDateTime dataFim);
 
-    // Novo método para buscar por período e espaço
     @Query("""
         SELECT s FROM SolicitacaoReserva s
         WHERE s.status = br.uece.alunos.sisreserva.v1.domain.solicitacaoReserva.StatusSolicitacao.APROVADO
@@ -293,9 +291,7 @@ public interface SolicitacaoReservaRepository extends JpaRepository<SolicitacaoR
     /**
      * Busca todas as solicitações pendentes que conflitam com um intervalo de tempo específico
      * para o mesmo espaço ou equipamento da solicitação aprovada.
-     * 
-     * <p>Este método é usado para recusar automaticamente solicitações conflitantes quando
-     * uma reserva é aprovada.</p>
+     *
      * 
      * @param solicitacaoAprovadaId ID da solicitação que foi aprovada (para excluí-la dos resultados)
      * @param espacoId ID do espaço (null se for reserva de equipamento)
